@@ -93,4 +93,60 @@ public class Persona {
 	public void setCtraTotal(double ctraTotal) {
 		this.ctraTotal=ctraTotal;
 	}	
+	
+	public String getNombre() {
+		return this.nombre;
+	}
+	
+	public String getRFC() {
+		return this.RFC;
+	}
+	
+	public int getNivelEdu() {
+		return this.nivelEdu;
+	}
+	
+	public double getSueldoMes() {
+		return this.sueldoMes;
+	}
+	
+	public double getAguinaldo() {
+		return this.aguinaldo;
+	}
+	
+	public double getPrimaVaca() {
+		return this.primaVaca;
+	}
+	
+	public double getDMediHosp() {
+		return this.dMediHosp;
+	}
+	
+	public double getDGastFune() {
+		return this.dGastFune;
+	}
+	
+	public double getSeguroGMM() {
+		return this.seguroGMM;
+	}
+	
+	public double getCredHipo() {
+		return this.crediHipo;
+	}
+	
+	public double getDonativos() {
+		return this.donativos;
+	}
+	
+	public double getAporAfore() {
+		return this.aporAfore;
+	}
+	
+	public double getTransEsco() {
+		return this.transEsco;
+	}
+	
+	public double getCtraTotal() {
+		return this.ctraTotal;
+	}
 }
