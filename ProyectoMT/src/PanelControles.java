@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -58,7 +59,8 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 				  	  lbCL1,
 				  	  lbCL2,
 				  	  lbCL3,
-				  	  lbCL4;
+				  	  lbCL4,
+				  	  lbCL5;
 	
 	//Botones
 	private JButton btCalcular,
@@ -79,11 +81,11 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 	//Constructor
 	public PanelControles() {
 		super();
-		this.setPreferredSize(new Dimension(400, 600));
+		this.setPreferredSize(new Dimension(400, 700));
 		
 		//Creación de objetos
 			//Labels
-		this.lbDatosGen=new JLabel("                                                 Datos Generales                                        ");
+		this.lbDatosGen=new JLabel("                                                 "+"Datos Generales"+"                                        ");
 		this.lbNombre=new JLabel("                             Nombre:");
 		this.lbIngresos=new JLabel("                                                  Ingresos                                          ");
 		this.lbIngresosMensuales=new JLabel("                              Sueldo Mensual:");
@@ -110,6 +112,7 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.lbCL2=new JLabel("                                                                                                ");
 		this.lbCL3=new JLabel("                                                                                                ");
 		this.lbCL4=new JLabel("                                                                                                ");
+		this.lbCL5=new JLabel("                                                                                                ");
 		
 			//TextFields
 		this.tfNombre=new JTextField(20);
@@ -126,6 +129,8 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.tfColegiaturas=new JTextField(10);
 		
 			//Botones
+		this.btCalcular=new JButton("Calcular");
+		this.btReiniciar=new JButton("Reiniciar");
 		
 		
 			//RadioButtons
@@ -181,8 +186,30 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.add(this.rbPrimaria);
 		this.add(this.rbSecundaria);
 		this.add(this.rbPreparatoria);
+		this.btCalcular.setPreferredSize(new Dimension(120, 60));
+		this.btReiniciar.setPreferredSize(new Dimension(120, 60));
+		this.add(this.lbCL5);
+		this.add(this.btCalcular);
+		this.add(this.btReiniciar);
+		this.btReiniciar.addActionListener(this);
 		
 	
+	}
+	
+	private String getEscolaridad() {
+		while (true) {
+			if (this.rbPreescolar.hasFocus()) {
+				return "preescolar";
+			} else if (this.rbPrimaria.hasFocus()) {
+				return "primaria";
+			} else if (this.rbSecundaria.hasFocus()) {
+				return "secundaria";
+			} else if (this.rbPreparatoria.hasFocus()) {
+				return "preparatoria";
+			} else {
+				JOptionPane.showMessageDialog(null, "Seleccioine una escolaridad.");
+			}
+		}
 	}
 	
 	@Override
@@ -193,37 +220,53 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource()==this.btReiniciar) {
+			System.out.println("Borrado Exitoso!");
+			this.tfAfore.setText("");
+			this.tfAguinaldo.setText("");
+			this.tfColegiaturas.setText("");
+			this.tfCredHipo.setText("");
+			this.tfDonativos.setText("");
+			this.tfGastosFun.setText("");
+			this.tfGastosMedHos.setText("");
+			this.tfIngresosMensuales.setText("");
+			this.tfNombre.setText("");
+			this.tfPrimasSegurosGMM.setText("");
+			this.tfPrimaVac.setText("");
+			this.tfTransEsc.setText("");
+			this.bg.clearSelection();
+		} else if (e.getSource()==this.btCalcular) {
+			//Cálculos
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
+	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
+	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
+	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
+	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
