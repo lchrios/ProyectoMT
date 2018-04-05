@@ -17,7 +17,7 @@ public class PanelArchivos extends JPanel{
 	
 	public PanelArchivos() {
 		super();
-		this.setPreferredSize(new Dimension(500,700));
+		this.setPreferredSize(new Dimension(500,780));
 		
 		fcInput=new JFileChooser("//home//");
 		fcOutput=new JFileChooser("//home//");

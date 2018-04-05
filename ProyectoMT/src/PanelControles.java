@@ -53,6 +53,7 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 				  	  lbTransEsc,
 				  	  lbNivelCol,
 				  	  lbColegiaturas,
+				  	  lbExpVacio,
 				  	  lbBL1,
 				  	  lbBL2,
 				  	  lbBL3,
@@ -60,7 +61,9 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 				  	  lbCL2,
 				  	  lbCL3,
 				  	  lbCL4,
-				  	  lbCL5;
+				  	  lbCL5,
+				  	  lbCL6,
+				  	  lbCL7;
 	
 	//Botones
 	private JButton btCalcular,
@@ -70,7 +73,8 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 	private JRadioButton rbPreescolar,
 					     rbPrimaria,
 					     rbSecundaria,
-					     rbPreparatoria;
+					     rbPreparatoria,
+					     rbProfesionalTec;
 	
 	//ButtonGroup
 	ButtonGroup bg;
@@ -81,11 +85,11 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 	//Constructor
 	public PanelControles() {
 		super();
-		this.setPreferredSize(new Dimension(400, 700));
+		this.setPreferredSize(new Dimension(400, 780));
 		
 		//Creación de objetos
 			//Labels
-		this.lbDatosGen=new JLabel("                                                 "+"Datos Generales"+"                                        ");
+		this.lbDatosGen=new JLabel("Datos Generales");
 		this.lbNombre=new JLabel("                             Nombre:");
 		this.lbIngresos=new JLabel("                                                  Ingresos                                          ");
 		this.lbIngresosMensuales=new JLabel("                              Sueldo Mensual:");
@@ -105,6 +109,10 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.lbTransEsc=new JLabel("                                         Transporte escolar:");
 		this.lbColegiaturas= new JLabel("                                     Colegiaturas pagadas:");
 		this.lbNivelCol=new JLabel("                                       Nivel educativo:                                   "	);
+		this.lbExpAf=new JLabel("*Hasta un 10% de los ingresos.");
+		this.lbExpAg=new JLabel("**Hasta 15 días excentos de impuestos o sea una quincena.");
+		this.lbExpPV=new JLabel("***Excento hasta 15 días del salario mínimo.");
+		this.lbExpVacio=new JLabel("TODO CAMPO QUE QUEDE VACÍO SERÁ INTERPRETADO COMO 0");
 		this.lbBL1=new JLabel("---------------------------------------------------------------------------------------");
 		this.lbBL2=new JLabel("---------------------------------------------------------------------------------------");
 		this.lbBL3=new JLabel("---------------------------------------------------------------------------------------");
@@ -113,7 +121,8 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.lbCL3=new JLabel("                                                                                                ");
 		this.lbCL4=new JLabel("                                                                                                ");
 		this.lbCL5=new JLabel("                                                                                                ");
-		
+		this.lbCL6=new JLabel("                                                                                                ");
+		this.lbCL7=new JLabel("                                                                                                ");
 			//TextFields
 		this.tfNombre=new JTextField(20);
 		this.tfIngresosMensuales=new JTextField(15);
@@ -137,15 +146,17 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.rbPreescolar=new JRadioButton("Preescolar");
 		this.rbPrimaria=new JRadioButton("Primaria");
 		this.rbSecundaria=new JRadioButton("Secundaria");
-		this.rbPreparatoria=new JRadioButton("Preparatoria");
+		this.rbPreparatoria=new JRadioButton("Bachillerato");
+		this.rbProfesionalTec=new JRadioButton("Profesional Técnico");
 		bg=new ButtonGroup();
 		this.bg.add(rbPreescolar);
 		this.bg.add(rbPrimaria);
 		this.bg.add(rbSecundaria);
 		this.bg.add(rbPreparatoria);
+		this.bg.add(rbProfesionalTec);
 		
 		
-		//Adición de objetos
+		//Adición de objetos al entorno gráfico
 		this.add(this.lbBL1);
 		this.add(this.lbDatosGen);
 		this.add(this.lbCL1);
@@ -157,6 +168,7 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.add(this.lbIngresosMensuales);
 		this.add(this.tfIngresosMensuales);
 		this.add(this.lbPrestaAdic);
+		this.add(this.lbCL6);
 		this.add(this.lbPrimaVac);
 		this.add(this.tfPrimaVac);
 		this.add(this.lbAguinaldo);
@@ -186,17 +198,26 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.add(this.rbPrimaria);
 		this.add(this.rbSecundaria);
 		this.add(this.rbPreparatoria);
-		this.btCalcular.setPreferredSize(new Dimension(120, 60));
-		this.btReiniciar.setPreferredSize(new Dimension(120, 60));
+		this.add(this.rbProfesionalTec);
+		
+		//Configuración de los botones "calcular" y "reiniciar"
+		this.btCalcular.setPreferredSize(new Dimension(120, 40));
+		this.btReiniciar.setPreferredSize(new Dimension(120, 40));
 		this.add(this.lbCL5);
 		this.add(this.btCalcular);
 		this.add(this.btReiniciar);
 		this.btReiniciar.addActionListener(this);
 		
+		//Aclaraciones
+		this.add(this.lbExpAg);
+		this.add(this.lbExpPV);
+		this.add(this.lbExpAf);
+		this.add(this.lbExpVacio);
 	
 	}
-	
+	//Getter de la escolaridad
 	private String getEscolaridad() {
+		
 		while (true) {
 			if (this.rbPreescolar.hasFocus()) {
 				return "preescolar";
@@ -205,10 +226,48 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 			} else if (this.rbSecundaria.hasFocus()) {
 				return "secundaria";
 			} else if (this.rbPreparatoria.hasFocus()) {
-				return "preparatoria";
+				return "bachillerato";
+			} else if (this.rbProfesionalTec.hasFocus()) {
+				return "profesional tecnico";
 			} else {
 				JOptionPane.showMessageDialog(null, "Seleccioine una escolaridad.");
 			}
+		}
+	}
+	
+	public boolean validaVacio(String str) {
+		if (str=="" || str==null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public boolean validaTod() {
+		if(this.validaVacio(this.tfNombre.getText()) && this.validaVacio(this.tfAguinaldo.getText()) && this.validaVacio(this.tfAguinaldo.getText()) && this.validaVacio(this.tfIngresosMensuales.getText())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean validaTodo() {
+		if(this.validaVacio(this.tfNombre.getText())) {
+			if(this.validaVacio(this.tfIngresosMensuales.getText())) {
+				if(this.validaVacio(this.tfAguinaldo.getText())) {
+					if(this.validaVacio(this.tfPrimaVac.getText())) {
+						return true;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
 		}
 	}
 	
@@ -221,6 +280,7 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//Reinicia por defecto todos los campos
 		if (e.getSource()==this.btReiniciar) {
 			System.out.println("Borrado Exitoso!");
 			this.tfAfore.setText("");
@@ -237,7 +297,12 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 			this.tfTransEsc.setText("");
 			this.bg.clearSelection();
 		} else if (e.getSource()==this.btCalcular) {
-			//Cálculos
+			if(this.validaTodo()==true) {
+				//Aquí van los cálculos necesarios :D
+			} else {
+				System.out.println("Hola");
+				JOptionPane.showMessageDialog(null, "Alguno de los siguientes campos quedó vacío:\n-Nombre\n-Sueldo mensual\n-Aguinaldo\n-Prima vacaional");
+			}
 		}
 	}
 
@@ -270,5 +335,4 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		// TODO Auto-generated method stub
 
 	}
-
 }
