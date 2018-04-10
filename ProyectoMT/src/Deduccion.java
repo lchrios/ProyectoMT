@@ -45,4 +45,3 @@ double deduccion; //Variable de la deduccion del impuesto, lo maneje asi para qu
 	}
 
 }
-
