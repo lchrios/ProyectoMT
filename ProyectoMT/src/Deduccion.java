@@ -1,8 +1,8 @@
 
 public class Deduccion {
 	
-double deduccion; //Variable de la deduccion del impuesto, lo maneje asi para que no se complique la cosa
-	
+	double deduccion; //Variable de la deduccion del impuesto, lo maneje asi para que no se complique la cosa
+
 	public Deduccion() {
 		this(0.0);
 	}
