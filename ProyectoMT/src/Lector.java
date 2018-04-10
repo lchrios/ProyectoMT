@@ -35,10 +35,10 @@ public class Lector {
 		try {
 			BufferedReader br2 = new BufferedReader(new FileReader(ubicacion));
 			while ((linea=br2.readLine())!=null) {
-				st = new StringTokenizer(linea);
-				for(int i = 0;i>this.datos.length;i++) {
-					for(int j = 0;j>this.datos[i].length;j++) {
-					celda = st.nextToken(",");
+				st = new StringTokenizer(linea,",");
+				for(int i = 0;i<this.datos.length;i++) {
+					for(int j = 0;j<this.datos[i].length;j++) {
+					celda = st.nextToken();
 					this.datos[i][j] = celda;
 					}
 				}
