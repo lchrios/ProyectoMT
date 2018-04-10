@@ -1,6 +1,6 @@
 
 public class Persona {
-		double impuesto;
+		double impuesto;		
 		
 		public Persona() {
 			this(0.0);
