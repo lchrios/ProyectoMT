@@ -6,26 +6,40 @@ import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
 public class Lector {
+	int lineas;
 	String[][] datos;
+	String[] linea;
 	public Lector(String ubicacion){
-		String linea, 
-		       celda;
-		StringTokenizer st;
-		int lineas = 0;
+		String linea;
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(ubicacion));
 			while ((linea=br.readLine())!=null) {
-				lineas +=1;
+				this.lineas +=1;
 			}
 			br.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Archivo no encontrado, posible error en la ubiación.");
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Problema durante el proceso de lectura.");
+		}
+			
+	}
+	
+	
+	public void leer(String ubicacion) {
+		String linea,
+			   celda;
+		StringTokenizer st;
+		this.datos = new String[this.lineas][14];
+		try {
 			BufferedReader br2 = new BufferedReader(new FileReader(ubicacion));
-			this.datos = new String[lineas][14];
 			while ((linea=br2.readLine())!=null) {
 				st = new StringTokenizer(linea);
-				for(int i = 0;i>datos.length;i++) {
-					for(int j = 0;j>datos[i].length;j++) {
+				for(int i = 0;i>this.datos.length;i++) {
+					for(int j = 0;j>this.datos[i].length;j++) {
 					celda = st.nextToken(",");
-					datos[i][j] = celda;
+					this.datos[i][j] = celda;
 					}
 				}
 			br2.close();
@@ -36,25 +50,16 @@ public class Lector {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Problema durante el proceso de lectura.");
 		}
-			
 	}
 	
-
 	
-	public String[][] getDatos() {
-		return this.datos;
-	}
-	
-	public void imprime() {
-		for(int i=0;i<this.datos.length;i++) {
-			for(int j=0;j<this.datos[i].length;j++) {
-				System.out.println(datos[i][j]);
-			}
-		}
-	}
-
 	public static void main(String args[]) {
 		Lector prueba = new Lector("C:\\Users\\ArgaA\\Desktop\\E.csv");
-		prueba.imprime();
+		prueba.leer("C:\\Users\\ArgaA\\Desktop\\E.csv");
+		for(int i=0;i<prueba.datos.length;i++) {
+			for(int j=0;j<prueba.datos[i].length;j++) {
+				System.out.println(prueba.datos[i][j]);
+			}
+		}
 	}
 }

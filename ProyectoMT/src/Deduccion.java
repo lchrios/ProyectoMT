@@ -12,7 +12,7 @@ public class Deduccion {
 	}
 	
 	//Este es el metodo encargado de hacer todos los calculos ya que le demos las variable, lo malo es que entran un monton de variables
-	public double calcularDeduccion(double cuotaFija, double ingresos,double honorariosMedicos, double gastosFunerarios, double primaMedica, double gastosHipotecarios, double donativos, double retiro ,double transporteEscolar, double colegiatura, String escolaridad) {
+	public void calcularDeduccion(double cuotaFija, double ingresos,double honorariosMedicos, double gastosFunerarios, double primaMedica, double gastosHipotecarios, double donativos, double retiro ,double transporteEscolar, double colegiatura, String escolaridad) {
 		double limite = ingresos*.10; //Agregue el limite de la deduccion para ya tener lo del 10% del salario
 		double deduccionDeImpuestos; //Esta es la variable para ir sumando y restando todo
 		//Este bloque if checa la escolaridad y checa lo que se deducira de impuestos, la variable tipo String debe de estar en minusculas
@@ -41,7 +41,7 @@ public class Deduccion {
 		}
 		deduccionDeImpuestos += retiro; //Le suma a la deduccion el retiro ya que puede deducir en total un 20%
 		deduccionDeImpuestos = cuotaFija - deduccionDeImpuestos; //Calculo final donde se deducen los impuestos y dice que se cobra de impuesto
-		return deduccionDeImpuestos;
+		this.deduccion = deduccionDeImpuestos;
 	}
 
 }
