@@ -1,4 +1,3 @@
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +16,7 @@ public class Escritor {
 					pw.print(datos[i][j]+",");
 				}
 				pw.println("");
+			pw.close();
 			}
 		} catch (IOException e){
 			JOptionPane.showMessageDialog(null, "Problema durante la escritura del archivo");

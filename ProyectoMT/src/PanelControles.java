@@ -1,7 +1,4 @@
-import java.awt.Button;
 import java.awt.Dimension;
-import java.awt.Label;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -14,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+
 
 public class PanelControles extends JPanel implements MouseListener, ActionListener, Runnable {
 

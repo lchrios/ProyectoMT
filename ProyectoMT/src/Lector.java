@@ -49,13 +49,18 @@ public class Lector {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Archivo no encontrado, posible error en la ubiación.");
 		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Error ocurrido durante la lectura del archivo.");
 		}
+	}
+	
+	public String[][] getDatos(){
+		return this.datos;
 	}
 	
 	//Obtiene toda la informacion necesaria
 	
 	
-	public static void main(String args[]) {
+	/*public static void main(String args[]) {
 		Lector prueba = new Lector("C:\\Users\\ArgaA\\Desktop\\E.csv");
 		prueba.leer("C:\\Users\\ArgaA\\Desktop\\E.csv");
 		for(int i=0;i<prueba.datos.length;i++) {
@@ -63,5 +68,5 @@ public class Lector {
 				System.out.println(prueba.datos[i][j]);
 			}
 		}
-	}
+	}*/
 }

@@ -1,12 +1,12 @@
 
 public class Persona {
-		double impuesto, porcentajeExcedente, aguinaldoExcento, aguinaldoGrabado,sueldoAnual, primaExcenta, primaGrabada, totalIngresos, coutaFija;
+		double impuesto, porcentajeExcedente, aguinaldoExcento, aguinaldoGravado,sueldoAnual, primaExcenta, primaGravada, totalIngresos, coutaFija;
 		//AGREGAR VARIABLE EXCEDENTE
 		public Persona() {
-			this.impuesto = this.porcentajeExcedente = this.aguinaldoExcento = this.aguinaldoGrabado = this.sueldoAnual = this.primaExcenta = this.primaGrabada = this.totalIngresos = this.coutaFija;
+			this.impuesto = this.porcentajeExcedente = this.aguinaldoExcento = this.aguinaldoGravado = this.sueldoAnual = this.primaExcenta = this.primaGravada = this.totalIngresos = this.coutaFija=0.0;
 		}
 
-		
+		//Calcula el totl de ingresos y verifica en qué estrato queda la persona en cuestión
 		public void Calcula(String[] datos, double deduccion) {
 			int a = Integer.parseInt(datos[2]);
 			double sueldo = a;
@@ -16,10 +16,10 @@ public class Persona {
 			double prima = a;
 			this.sueldoAnual = sueldo*12;
 			this.aguinaldoExcento = sueldo/2;
-			this.aguinaldoGrabado = aguinaldo - aguinaldoExcento;
+			this.aguinaldoGravado = aguinaldo - aguinaldoExcento;
 			this.primaExcenta = 1209;
-			this.primaGrabada = prima - primaExcenta;
-			this.totalIngresos = sueldoAnual + aguinaldo + prima - aguinaldoGrabado - primaGrabada - deduccion;
+			this.primaGravada = prima - primaExcenta;
+			this.totalIngresos = sueldoAnual + aguinaldo + prima - aguinaldoGravado - primaGravada - deduccion;
 			double impuestos = 0;
 			if (0.01<=this.totalIngresos && this.totalIngresos>=5952.84) {
 				double excedente = this.totalIngresos - 0.01;
@@ -92,7 +92,7 @@ public class Persona {
 		}
 		
 		public double GetAG(){
-			return this.aguinaldoGrabado;
+			return this.aguinaldoGravado;
 		}
 		
 		public double GetSA(){
@@ -104,7 +104,7 @@ public class Persona {
 		}
 		
 		public double GetPG(){
-			return this.primaGrabada;
+			return this.primaGravada;
 		}
 		
 		public double GetTI(){

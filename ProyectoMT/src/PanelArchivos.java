@@ -8,18 +8,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class PanelArchivos extends JPanel{
 	private String rutaInput,
 				   rutaOutput;
-	
 	private JFileChooser fcInput,
 						 fcOutput;
-	
 	private File file;
 	private Lector lector;
+	private Escritor escritor;
+	private Deduccion deduccion=new Deduccion();
+	private Persona[] personas;
 	private JButton btAbrir,
 					btGuardar,
 					btCalcular;
@@ -29,8 +29,9 @@ public class PanelArchivos extends JPanel{
 	private JLabel lbAbrir,
 				   lbGuardar,
 				   lbNota1;
-	
+	private String[][] datosProcesados;
 	private FileNameExtensionFilter filter=new FileNameExtensionFilter("Archivos CSV","csv");
+	
 	
 	public PanelArchivos() {
 		super();
@@ -77,8 +78,17 @@ public class PanelArchivos extends JPanel{
 		this.btCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(parametrosCompletos()) {
-					Lector lector=new Lector(rutaInput);
-					Escritor escritor=new Escritor(rutaOutput);
+					lector=new Lector(rutaInput);
+					lector.leer(rutaInput);
+					String[][] rawData=lector.getDatos();
+					personas=new Persona[rawData.length];
+					for(int i=0;i<rawData.length;i++) {
+						personas[i]=new Persona();
+						deduccion.calcularDeduccion(Double.parseDouble(rawData[i][2]), Double.parseDouble(rawData[i][5]), Double.parseDouble(rawData[i][6]), Double.parseDouble(rawData[i][7]), Double.parseDouble(rawData[i][8]), Double.parseDouble(rawData[i][9]), Double.parseDouble(rawData[i][10]), Double.parseDouble(rawData[i][11]), Double.parseDouble(rawData[i][12]), rawData[i][13]);
+						
+					}
+					
+					escritor=new Escritor(rutaOutput, lector.getDatos());
 				} else {
 					JOptionPane.showMessageDialog(null, "Debes asignar una dirección para entrada y salida de datos.");
 				}
@@ -93,12 +103,10 @@ public class PanelArchivos extends JPanel{
 		this.add(this.tfGuardar);
 		this.add(this.btGuardar);
 		this.add(this.btCalcular);
-		
 		this.btCalcular.setPreferredSize(new Dimension(120, 30));
 	}
 	
 	public boolean parametrosCompletos() {
-		
 		if(this.tfAbrir.getText()!="" && this.tfGuardar.getText()!="") {
 			return true;
 		} else {
