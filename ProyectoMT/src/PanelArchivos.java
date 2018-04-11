@@ -46,6 +46,7 @@ public class PanelArchivos extends JPanel{
 				}
 			}
 		});
+		
 		this.btGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				fcOutput=new JFileChooser();
@@ -61,7 +62,9 @@ public class PanelArchivos extends JPanel{
 		});
 		this.btCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//Código de cálculo
+				Lector lector=new Lector(rutaInput);
+				
+				Escritor escritor=new Escritor(rutaOutput, datos);
 			}
 		});
 		this.add(btAbrir);

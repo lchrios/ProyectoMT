@@ -53,7 +53,7 @@ public class Lector {
 	}
 	
 	
-	public static void main(String args[]) {
+	/*public static void main(String args[]) {
 		Lector prueba = new Lector("C:\\Users\\chror\\Downloads\\EntradaISR.csv");
 		prueba.leer("C:\\Users\\chror\\Downloads\\EntradaISR.csv");
 		for(int i=0;i<prueba.datos.length;i++) {
@@ -61,5 +61,5 @@ public class Lector {
 				System.out.println(prueba.datos[i][j]);
 			}
 		}
-	}
+	}*/
 }
