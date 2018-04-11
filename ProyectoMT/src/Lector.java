@@ -8,7 +8,8 @@ import javax.swing.JOptionPane;
 public class Lector {
 	int lineas;
 	String[][] datos;
-	String[] linea;
+
+	
 	public Lector(String ubicacion){
 		String linea;
 		try {
@@ -25,7 +26,7 @@ public class Lector {
 		}
 			
 	}
-	
+	//Inicia el objeto contando las lineas del archivo
 	
 	public void leer(String ubicacion) {
 		String linea,
@@ -48,18 +49,19 @@ public class Lector {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Archivo no encontrado, posible error en la ubiación.");
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Problema durante el proceso de lectura.");
 		}
 	}
 	
+	//Obtiene toda la informacion necesaria
 	
-	/*public static void main(String args[]) {
-		Lector prueba = new Lector("C:\\Users\\chror\\Downloads\\EntradaISR.csv");
-		prueba.leer("C:\\Users\\chror\\Downloads\\EntradaISR.csv");
+	
+	public static void main(String args[]) {
+		Lector prueba = new Lector("C:\\Users\\ArgaA\\Desktop\\E.csv");
+		prueba.leer("C:\\Users\\ArgaA\\Desktop\\E.csv");
 		for(int i=0;i<prueba.datos.length;i++) {
 			for(int j=0;j<prueba.datos[i].length;j++) {
 				System.out.println(prueba.datos[i][j]);
 			}
 		}
-	}*/
+	}
 }

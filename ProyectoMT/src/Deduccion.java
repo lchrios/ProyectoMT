@@ -1,46 +1,41 @@
 
 public class Deduccion {
 	
-	double deduccion; //Variable de la deduccion del impuesto, lo maneje asi para que no se complique la cosa
+double deduccion,colegiaturaFinal, limiteDeduccion, deduccionSinRetiro; 
 
 	public Deduccion() {
-		this(0.0);
+		this.deduccion = this.colegiaturaFinal = 0;
 	}
 	
-	public Deduccion(double deduccion) {
-		this.deduccion=deduccion;
-	}
 	
-	//Este es el metodo encargado de hacer todos los calculos ya que le demos las variable, lo malo es que entran un monton de variables
-	public void calcularDeduccion(double cuotaFija, double ingresos,double honorariosMedicos, double gastosFunerarios, double primaMedica, double gastosHipotecarios, double donativos, double retiro ,double transporteEscolar, double colegiatura, String escolaridad) {
-		double limite = ingresos*.10; //Agregue el limite de la deduccion para ya tener lo del 10% del salario
-		double deduccionDeImpuestos; //Esta es la variable para ir sumando y restando todo
-		//Este bloque if checa la escolaridad y checa lo que se deducira de impuestos, la variable tipo String debe de estar en minusculas
+	public void calcularDeduccion(double ingresos,double honorariosMedicos, double gastosFunerarios, double primaMedica, double gastosHipotecarios, double donativos, double retiro ,double transporteEscolar, double colegiatura, String escolaridad) {
+		this.limiteDeduccion = ingresos*.10; 
+		double deduccionDeImpuestos; 
 		if (escolaridad == "preescolar" && colegiatura>14200) {
-			colegiatura = 14200;
+			this.colegiaturaFinal = 14200;
 		}
 		else if (escolaridad == "primaria" && colegiatura>12900) {
-			colegiatura = 12900;
+			this.colegiaturaFinal = 12900;
 		}
 		else if (escolaridad == "secundaria" && colegiatura>19900) {
-			colegiatura = 19900;
+			this.colegiaturaFinal = 19900;
 		}
 		else if (escolaridad == "profesional tecnico" && colegiatura>17100) {
-			colegiatura = 17100;
+			this.colegiaturaFinal = 17100;
 		}
 		else if (escolaridad == "bachillerato" && colegiatura>24500) {
-			colegiatura = 24500;
+			this.colegiaturaFinal = 24500;
+		} else {
+			this.colegiaturaFinal = colegiatura;
 		}
-		deduccionDeImpuestos = gastosFunerarios + primaMedica + gastosHipotecarios + donativos + transporteEscolar + colegiatura;//Aqui se hace la primera suma para encontrar todos sus gastos
-		//Este bloque if checa los valores de la deduccion y el dinero que aporto a su retiro y checa si esta dentro del limite para deducir, en caso de pasarlo el valor lo convierte en el limite
-		if (deduccionDeImpuestos > limite) {
-			deduccionDeImpuestos = limite;
+		deduccionDeImpuestos = gastosFunerarios + primaMedica + gastosHipotecarios + donativos + transporteEscolar + this.colegiaturaFinal;
+		if (deduccionDeImpuestos > this.limiteDeduccion) {
+			deduccionDeImpuestos = this.limiteDeduccion;
 		}
-		if (retiro > limite) {
-			retiro = limite;
+		if (retiro > this.limiteDeduccion) {
+			retiro = this.limiteDeduccion;
 		}
 		deduccionDeImpuestos += retiro; //Le suma a la deduccion el retiro ya que puede deducir en total un 20%
-		deduccionDeImpuestos = cuotaFija - deduccionDeImpuestos; //Calculo final donde se deducen los impuestos y dice que se cobra de impuesto
 		this.deduccion = deduccionDeImpuestos;
 	}
 

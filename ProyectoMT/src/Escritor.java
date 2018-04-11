@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -6,21 +7,13 @@ import javax.swing.JOptionPane;
 
 public class Escritor {
 
-	public Escritor(String ruta, String[][] datos) {
-		PrintWriter pr;
-		ruta=ruta+"\\SalidaISR.csv";
+	public Escritor(String Ubicacion,String Nombre,String RFC,double SueldoMensual,double IngresoAnual, double Aguinaldo, double AguinaldoExcento, double AguinaldoGravado, double Prima, double PrimaExcenta, double PrimaGravada, double TotalIngresos, double Medicos, double Funerarios, double SGMM, double Hipoteca, double Retiro, double TransporteEscolar, String Educacion, double MaxColegiatura, double Colegiatura, double TotalSinRetiro, double DeduccionPermitida, double ISR, double CoutaFija, double PorcentajeAplicado, double PagoExcedente, double TotalAPagar) {
+		String linea;
 		try {
-			pr = new PrintWriter(new FileWriter(ruta));
-			pr.println("Nombre,RFC,Sueldo mensual,Ingreso anual,Aguinaldo,Aguinaldo exento,Aguinaldo gravado,Prima vacacional,Prima vacacional excenta,Prima vacacional gravada,Total ingresos gravan,Medicos y hospitales,Gastos funerarios,SGMM,Hipotecarios,Donativos,Subcuenta retiro,Transporte escolar,Nivel educativo,Maximo a deducir colegiatura,Colegiatura pagada,Total deducciones (sin retiro),Deduccion permitida 10%,Monto ISR,Cuota fija,Porcentaje excedente,Pago excedente,Total a pagar");
-			for(int i=0;i<datos.length;i++) {
-				for(int j=0;j<datos[i].length;j++) {
-					pr.println(datos[i][j]+",");
-				}
-			}
-			pr.close();
-			JOptionPane.showMessageDialog(null, "Archivo escrito exitosamente.\nPuede encontrar el archivo en:"+ruta);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Problema durante el proceso de escritura.");
+			PrintWriter pw = new PrintWriter(new FileWriter(Ubicacion));
+			linea = Nombre + "," + RFC + "," + String.valueOf(SueldoMensual) + "," + String.valueOf(IngresoAnual) + "," + String.valueOf(Aguinaldo) + "," + String.valueOf(AguinaldoExcento) + "," + String.valueOf(AguinaldoGravado) + "," + String.valueOf(Prima) + "," + String.valueOf(PrimaExcenta) + "," + String.valueOf(PrimaGravada) + "," + String.valueOf(TotalIngresos) + "," + String.valueOf(Medicos) + "," + String.valueOf(Funerarios) + "," + String.valueOf(SGMM) + "," + String.valueOf(Hipoteca) + "," + String.valueOf(Retiro) + "," + String.valueOf(TransporteEscolar) + "," + String.valueOf(Educacion) + "," + String.valueOf(MaxColegiatura) + "," + String.valueOf(Colegiatura) + "," + String.valueOf(TotalSinRetiro) + "," + String.valueOf(DeduccionPermitida) + "," + String.valueOf(ISR) + "," + String.valueOf(CoutaFija) + "," + String.valueOf(PorcentajeAplicado) + "," + String.valueOf(PagoExcedente) + "," + String.valueOf(TotalAPagar);
+		} catch (IOException e){
+			JOptionPane.showMessageDialog(null, "Problema durante la escritura del archivo");
 		}
 	}
 }
