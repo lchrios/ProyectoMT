@@ -252,20 +252,8 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 	}
 	
 	public boolean validaTodo() {
-		if(this.validaVacio(this.tfNombre.getText())) {
-			if(this.validaVacio(this.tfIngresosMensuales.getText())) {
-				if(this.validaVacio(this.tfAguinaldo.getText())) {
-					if(this.validaVacio(this.tfPrimaVac.getText())) {
-						return true;
-					} else {
-						return false;
-					}
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
+		if(this.validaVacio(this.tfNombre.getText()) && this.validaVacio(this.tfIngresosMensuales.getText()) && this.validaVacio(this.tfAguinaldo.getText()) && this.validaVacio(this.tfPrimaVac.getText())) {
+			return true;
 		} else {
 			return false;
 		}

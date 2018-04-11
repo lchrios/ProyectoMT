@@ -2,11 +2,12 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.concurrent.SynchronousQueue;
-
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -22,17 +23,27 @@ public class PanelArchivos extends JPanel{
 	private JButton btAbrir,
 					btGuardar,
 					btCalcular;
+	private JTextField tfAbrir,
+					   tfGuardar,
+					   tfNomArch;
+	private JLabel lbAbrir,
+				   lbGuardar,
+				   lbNota1;
 	
 	private FileNameExtensionFilter filter=new FileNameExtensionFilter("Archivos CSV","csv");
 	
 	public PanelArchivos() {
 		super();
-		this.setPreferredSize(new Dimension(300,780));
+		this.setPreferredSize(new Dimension(400,780));
 		
-		btAbrir=new JButton("Buscar archivo");
-		btGuardar=new JButton("Seleccionar ruta de guardado");
-		btCalcular=new JButton("Calcular");
-		
+		this.lbAbrir=new JLabel("Entrada:");
+		this.btAbrir=new JButton("Buscar");
+		this.lbGuardar=new JLabel("           Salida:");
+		this.btGuardar=new JButton("Seleccionar");
+		this.btCalcular=new JButton("Calcular");
+		this.lbNota1=new JLabel("Revise bien las ubicaciones que pone en los espacios.");
+		this.tfAbrir=new JTextField(20);
+		this.tfGuardar=new JTextField(20);
 		this.btAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				fcInput=new JFileChooser();
@@ -43,6 +54,7 @@ public class PanelArchivos extends JPanel{
 					file=fcInput.getSelectedFile();
 					rutaInput=file.getAbsolutePath();
 					System.out.println("Path adquirido exitosamente.\n"+rutaInput);
+					tfAbrir.setText(rutaInput);
 				}
 			}
 		});
@@ -51,27 +63,46 @@ public class PanelArchivos extends JPanel{
 			public void actionPerformed(ActionEvent arg0) {
 				fcOutput=new JFileChooser();
 				fcOutput.setDialogTitle("Escoge la ubicación del archivo de salida");
+				fcOutput.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			    fcOutput.setAcceptAllFileFilterUsed(false);
 				fcOutput.setApproveButtonText("Guardar");
 				int valorRetorno=fcOutput.showOpenDialog(null);
 				if(valorRetorno==JFileChooser.APPROVE_OPTION) {
-					file=fcOutput.getSelectedFile();
-					rutaOutput=file.getAbsolutePath();
-					System.out.println("Path adquirido exitosamente.\n"+rutaInput);
+					rutaOutput=fcOutput.getCurrentDirectory().getAbsolutePath();
+					System.out.println("Path adquirido exitosamente.\n"+rutaOutput);
+					tfGuardar.setText(rutaOutput);
 				}
 			}
 		});
 		this.btCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Lector lector=new Lector(rutaInput);
+				if(parametrosCompletos()) {
+					Lector lector=new Lector(rutaInput);
+					Escritor escritor=new Escritor(rutaOutput);
+				} else {
+					JOptionPane.showMessageDialog(null, "Debes asignar una dirección para entrada y salida de datos.");
+				}
 				
-				Escritor escritor=new Escritor(rutaOutput, datos);
+				
 			}
 		});
-		this.add(btAbrir);
-		this.add(btGuardar);
-		this.add(btCalcular);
-		this.btAbrir.setLocation(50, 100);
+		this.add(this.lbAbrir);
+		this.add(this.tfAbrir);
+		this.add(this.btAbrir);
+		this.add(this.lbGuardar);
+		this.add(this.tfGuardar);
+		this.add(this.btGuardar);
+		this.add(this.btCalcular);
+		
+		this.btCalcular.setPreferredSize(new Dimension(120, 30));
 	}
 	
-	
+	public boolean parametrosCompletos() {
+		
+		if(this.tfAbrir.getText()!="" && this.tfGuardar.getText()!="") {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
