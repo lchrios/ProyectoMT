@@ -38,5 +38,20 @@ double deduccion,colegiaturaFinal, limiteDeduccion, deduccionSinRetiro;
 		deduccionDeImpuestos += retiro; //Le suma a la deduccion el retiro ya que puede deducir en total un 20%
 		this.deduccion = deduccionDeImpuestos;
 	}
-
+	
+	public double GetD() {
+		return this.deduccion;
+	}
+	
+	public double GetCF() {
+		return this.colegiaturaFinal;
+	}
+	
+	public double GetLD() {
+		return this.limiteDeduccion;
+	}
+	
+	public double GetDS() {
+		return this.deduccionSinRetiro;
+	}
 }
