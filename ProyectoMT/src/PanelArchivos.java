@@ -61,7 +61,7 @@ public class PanelArchivos extends JPanel{
 		});
 		this.btCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				//Código de cálculo
 			}
 		});
 		this.add(btAbrir);

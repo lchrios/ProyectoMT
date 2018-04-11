@@ -54,8 +54,8 @@ public class Lector {
 	
 	
 	public static void main(String args[]) {
-		Lector prueba = new Lector("C:\\Users\\ArgaA\\Desktop\\E.csv");
-		prueba.leer("C:\\Users\\ArgaA\\Desktop\\E.csv");
+		Lector prueba = new Lector("C:\\Users\\chror\\Downloads\\EntradaISR.csv");
+		prueba.leer("C:\\Users\\chror\\Downloads\\EntradaISR.csv");
 		for(int i=0;i<prueba.datos.length;i++) {
 			for(int j=0;j<prueba.datos[i].length;j++) {
 				System.out.println(prueba.datos[i][j]);
