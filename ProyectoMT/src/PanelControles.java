@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -13,7 +14,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 
-public class PanelControles extends JPanel implements MouseListener, ActionListener, Runnable {
+public class PanelControles extends JPanel {
 
 	//TextFields
 	private JTextField tfNombre,
@@ -27,7 +28,8 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 					  tfDonativos,
 					  tfAfore,
 					  tfTransEsc,
-					  tfColegiaturas;
+					  tfColegiaturas,
+					  tfRFC;
 	
 	//Labels
 	private JLabel lbDatosGen,
@@ -60,7 +62,8 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 				  	  lbCL4,
 				  	  lbCL5,
 				  	  lbCL6,
-				  	  lbCL7;
+				  	  lbCL7,
+				  	  lbRFC;
 	
 	//Botones
 	private JButton btCalcular,
@@ -74,15 +77,24 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 					     rbProfesionalTec;
 	
 	//ButtonGroup
-	ButtonGroup bg;
-
+	private ButtonGroup bg;
+	
+	//JFileChooser
+	private JFileChooser fcControles;
 	//Separador de Linea
 	public static final String NL = System.getProperty("line.separator"); 
 	
+	//Strings
+	private String rutaOutput;
+	
+	//Persona
+	private Persona persona;
+	//Deduccion
+	private Deduccion deduccion;
 	//Constructor
 	public PanelControles() {
 		super();
-		this.setPreferredSize(new Dimension(400, 780));
+		this.setPreferredSize(new Dimension(400, 800));
 		
 		//Creación de objetos
 			//Labels
@@ -120,6 +132,7 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.lbCL5=new JLabel("                                                                                                ");
 		this.lbCL6=new JLabel("                                                                                                ");
 		this.lbCL7=new JLabel("                                                                                                ");
+		this.lbRFC=new JLabel("                                    RFC:");
 			//TextFields
 		this.tfNombre=new JTextField(20);
 		this.tfIngresosMensuales=new JTextField(15);
@@ -133,6 +146,7 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.tfAfore=new JTextField(10);
 		this.tfTransEsc=new JTextField(10);
 		this.tfColegiaturas=new JTextField(10);
+		this.tfRFC=new JTextField(20);
 		
 			//Botones
 		this.btCalcular=new JButton("Calcular");
@@ -143,7 +157,7 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.rbPreescolar=new JRadioButton("Preescolar");
 		this.rbPrimaria=new JRadioButton("Primaria");
 		this.rbSecundaria=new JRadioButton("Secundaria");
-		this.rbPreparatoria=new JRadioButton("Bachillerato");
+		this.rbPreparatoria=new JRadioButton("Preparatoria");
 		this.rbProfesionalTec=new JRadioButton("Profesional Técnico");
 		bg=new ButtonGroup();
 		this.bg.add(rbPreescolar);
@@ -159,6 +173,8 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.add(this.lbCL1);
 		this.add(this.lbNombre);
 		this.add(this.tfNombre);
+		this.add(this.lbRFC);
+		this.add(this.tfRFC);
 		this.add(this.lbBL2);
 		this.add(this.lbIngresos);
 		this.add(this.lbCL2);
@@ -189,7 +205,7 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.add(this.tfColegiaturas);
 		this.add(this.lbTransEsc);
 		this.add(this.tfTransEsc);
-		this.add(this.lbCL4);
+		//this.add(this.lbCL4);
 		this.add(this.lbNivelCol);
 		this.add(this.rbPreescolar);
 		this.add(this.rbPrimaria);
@@ -203,7 +219,83 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 		this.add(this.lbCL5);
 		this.add(this.btCalcular);
 		this.add(this.btReiniciar);
-		this.btReiniciar.addActionListener(this);
+		this.btReiniciar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				tfAfore.setText("");
+				tfAguinaldo.setText("");
+				tfColegiaturas.setText("");
+				tfCredHipo.setText("");
+				tfDonativos.setText("");
+				tfGastosFun.setText("");
+				tfGastosMedHos.setText("");
+				tfIngresosMensuales.setText("");
+				tfNombre.setText("");
+				tfPrimasSegurosGMM.setText("");
+				tfPrimaVac.setText("");
+				tfTransEsc.setText("");
+				tfRFC.setText("");
+				bg.clearSelection();
+				System.out.println("Borrado Exitoso!");
+			}
+		});
+		this.btCalcular.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(validaTodo()) {
+					fcControles=new JFileChooser();
+					fcControles.setDialogTitle("Escoge la ubicación de destino.");
+					fcControles.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				    fcControles.setAcceptAllFileFilterUsed(false);
+					fcControles.setApproveButtonText("Guardar");
+					int valorRetorno=fcControles.showOpenDialog(null);
+					if(valorRetorno==JFileChooser.APPROVE_OPTION) {
+						rutaOutput=fcControles.getCurrentDirectory().getAbsolutePath();
+						System.out.println("Path adquirido exitosamente.\n"+rutaOutput);
+						String[][] datosProcesados=new String[1][28];
+						persona=new Persona();
+						deduccion=new Deduccion();
+						String[] a=new String[5];
+						a[0]="";a[1]="";a[2]=tfIngresosMensuales.getText();a[3]=tfAguinaldo.getText();a[4]=tfPrimaVac.getText();
+						deduccion.calcularDeduccion(Double.parseDouble(tfIngresosMensuales.getText()), Double.parseDouble(tfGastosMedHos.getText()), Double.parseDouble(tfGastosFun.getText()), Double.parseDouble(tfPrimasSegurosGMM.getText()), Double.parseDouble(tfCredHipo.getText()), Double.parseDouble(tfDonativos.getText()), Double.parseDouble(tfAfore.getText()), Double.parseDouble(tfTransEsc.getText()), Double.parseDouble(tfColegiaturas.getText()), getEscolaridad());
+						persona.Calcula(a, deduccion.GetD());
+						datosProcesados[0][0]=tfNombre.getText();//Nombre
+						datosProcesados[0][1]=tfRFC.getText();//RFC
+						datosProcesados[0][2]=tfIngresosMensuales.getText();//Sueldo Mensual
+						datosProcesados[0][3]=Double.toString(Double.parseDouble(tfIngresosMensuales.getText())*12);//Sueldo Anual
+						datosProcesados[0][4]=tfAguinaldo.getText();//Aguinaldo
+						datosProcesados[0][5]=Double.toString(persona.GetAE());//Aguinaldeo Excento
+						datosProcesados[0][6]=Double.toString(persona.GetAG());//Aguinaldo Gravado
+						datosProcesados[0][7]=tfPrimaVac.getText();//Prima Vac
+						datosProcesados[0][8]=Double.toString(persona.GetPrE());//Prima Vac Exc
+						datosProcesados[0][9]=Double.toString(persona.GetPG());//Prima Vac Gravada
+						datosProcesados[0][10]=Double.toString(persona.GetTI());//Total Ingresos
+						datosProcesados[0][11]=tfGastosMedHos.getText();//Medicos y hospi
+						datosProcesados[0][12]=tfGastosFun.getText();//Funerarios
+						datosProcesados[0][13]=tfPrimasSegurosGMM.getText();//SGMM
+						datosProcesados[0][14]=tfCredHipo.getText();//Hipotecas
+						datosProcesados[0][15]=tfDonativos.getText();//Donativos
+						datosProcesados[0][16]=tfAfore.getText();//Retiro
+						datosProcesados[0][17]=tfTransEsc.getText();//Transporte Escolar
+						datosProcesados[0][18]=getEscolaridad();//Nivel Escolar
+						datosProcesados[0][19]=Double.toString(deduccion.GetCF());//Max a deducir Colegiatura
+						datosProcesados[0][20]=tfColegiaturas.getText();//Colegiatura Pagada
+						datosProcesados[0][21]=Double.toString(deduccion.GetDS());//Total de deducciones sin retiro
+						datosProcesados[0][22]=Double.toString(Double.parseDouble(tfIngresosMensuales.getText())*1.2);//Deduccion permitida
+						datosProcesados[0][23]=Double.toString(persona.GetTI()-Double.parseDouble(datosProcesados[0][22]));//Monto ISR
+						datosProcesados[0][24]=Double.toString(persona.GetCJ());//Cuota Fija
+						datosProcesados[0][25]=Double.toString(persona.GetPE());//% excedente
+						datosProcesados[0][26]=Double.toString(persona.GetPE()*(Double.parseDouble(datosProcesados[0][23])-persona.GetLinf()));//Pago excedente
+						datosProcesados[0][27]=Double.toString(Double.parseDouble(datosProcesados[0][26])+persona.GetCJ());//Total a pagar
+						Escritor escritor=new Escritor(rutaOutput, datosProcesados);
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Alguno de los siguientes campos quedó vacío:\n-Nombre\n-Sueldo mensual\n-Aguinaldo\n-Prima vacaional");
+				}
+			}
+		});
 		
 		//Aclaraciones
 		this.add(this.lbExpAg);
@@ -214,7 +306,6 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 	}
 	//Getter de la escolaridad
 	private String getEscolaridad() {
-		
 		while (true) {
 			if (this.rbPreescolar.hasFocus()) {
 				return "preescolar";
@@ -223,7 +314,7 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 			} else if (this.rbSecundaria.hasFocus()) {
 				return "secundaria";
 			} else if (this.rbPreparatoria.hasFocus()) {
-				return "bachillerato";
+				return "preparatoria";
 			} else if (this.rbProfesionalTec.hasFocus()) {
 				return "profesional tecnico";
 			} else {
@@ -231,93 +322,14 @@ public class PanelControles extends JPanel implements MouseListener, ActionListe
 			}
 		}
 	}
-	
-	public boolean validaVacio(String str) {
-		if (str=="" || str==null) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	public boolean validaTod() {
-		if(this.validaVacio(this.tfNombre.getText()) && this.validaVacio(this.tfAguinaldo.getText()) && this.validaVacio(this.tfAguinaldo.getText()) && this.validaVacio(this.tfIngresosMensuales.getText())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
+
 	public boolean validaTodo() {
-		if(this.validaVacio(this.tfNombre.getText()) && this.validaVacio(this.tfIngresosMensuales.getText()) && this.validaVacio(this.tfAguinaldo.getText()) && this.validaVacio(this.tfPrimaVac.getText())) {
-			return true;
-		} else {
+		if(this.tfNombre.getText().isEmpty() || this.tfIngresosMensuales.getText().isEmpty() || this.tfAguinaldo.getText().isEmpty() || this.tfPrimaVac.getText().isEmpty() || this.tfRFC.getText().isEmpty()) {
+			System.out.println("Hay alguno vacío");
 			return false;
+		} else {
+			System.out.println("todos llenos :)");
+			return true;
 		}
-	}
-	
-	@Override
-	public void run() {
-		
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		//Reinicia por defecto todos los campos
-		if (e.getSource()==this.btReiniciar) {
-			System.out.println("Borrado Exitoso!");
-			this.tfAfore.setText("");
-			this.tfAguinaldo.setText("");
-			this.tfColegiaturas.setText("");
-			this.tfCredHipo.setText("");
-			this.tfDonativos.setText("");
-			this.tfGastosFun.setText("");
-			this.tfGastosMedHos.setText("");
-			this.tfIngresosMensuales.setText("");
-			this.tfNombre.setText("");
-			this.tfPrimasSegurosGMM.setText("");
-			this.tfPrimaVac.setText("");
-			this.tfTransEsc.setText("");
-			this.bg.clearSelection();
-		} else if (e.getSource()==this.btCalcular) {
-			if(this.validaTodo()==true) {
-				//Aquí van los cálculos necesarios :D
-			} else {
-				System.out.println("Hola");
-				JOptionPane.showMessageDialog(null, "Alguno de los siguientes campos quedó vacío:\n-Nombre\n-Sueldo mensual\n-Aguinaldo\n-Prima vacaional");
-			}
-		}
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 }

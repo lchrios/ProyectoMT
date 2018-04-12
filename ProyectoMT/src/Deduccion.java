@@ -1,7 +1,7 @@
 
 public class Deduccion {
 	
-double deduccion,colegiaturaFinal, limiteDeduccion, deduccionSinRetiro; 
+double deduccion,colegiaturaFinal, limiteDeduccion, deduccionSinRetiro, limCol; 
 
 	public Deduccion() {
 		this.deduccion = this.colegiaturaFinal = 0;
@@ -13,18 +13,23 @@ double deduccion,colegiaturaFinal, limiteDeduccion, deduccionSinRetiro;
 		double deduccionDeImpuestos; 
 		if (escolaridad == "preescolar" && colegiatura>14200) {
 			this.colegiaturaFinal = 14200;
+			this.limCol=14200;
 		}
 		else if (escolaridad == "primaria" && colegiatura>12900) {
 			this.colegiaturaFinal = 12900;
+			this.limCol=12900;
 		}
 		else if (escolaridad == "secundaria" && colegiatura>19900) {
 			this.colegiaturaFinal = 19900;
+			this.limCol=19900;
 		}
 		else if (escolaridad == "profesional tecnico" && colegiatura>17100) {
 			this.colegiaturaFinal = 17100;
+			this.limCol=17100;
 		}
-		else if (escolaridad == "bachillerato" && colegiatura>24500) {
+		else if (escolaridad == "preparatoria" && colegiatura>24500) {
 			this.colegiaturaFinal = 24500;
+			this.limCol=24500;
 		} else {
 			this.colegiaturaFinal = colegiatura;
 		}
@@ -53,5 +58,9 @@ double deduccion,colegiaturaFinal, limiteDeduccion, deduccionSinRetiro;
 	
 	public double GetDS() {
 		return this.deduccionSinRetiro;
+	}
+	
+	public double GetLC() {
+		return this.limCol;
 	}
 }
