@@ -237,6 +237,7 @@ public class PanelControles extends JPanel {
 				tfTransEsc.setText("");
 				tfRFC.setText("");
 				bg.clearSelection();
+				rutaOutput=null;
 				System.out.println("Borrado Exitoso!");
 			}
 		});

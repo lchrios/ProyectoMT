@@ -18,11 +18,12 @@ public class PanelArchivos extends JPanel {
 	private File file;
 	private Lector lector;
 	private Escritor escritor;
-	private Deduccion deduccion=new Deduccion();
+	private Deduccion deduccion;
 	private Persona[] personas;
 	private JButton btAbrir,
 					btGuardar,
-					btCalcular;
+					btCalcular,
+					btReiniciar;
 	private JTextField tfAbrir,
 					   tfGuardar,
 					   tfNomArch;
@@ -42,9 +43,18 @@ public class PanelArchivos extends JPanel {
 		this.lbGuardar=new JLabel("           Salida:");
 		this.btGuardar=new JButton("Seleccionar");
 		this.btCalcular=new JButton("Calcular");
+		this.btReiniciar=new JButton("Reiniciar");
 		this.lbNota1=new JLabel("Revise bien las ubicaciones que pone en los espacios.");
 		this.tfAbrir=new JTextField(20);
 		this.tfGuardar=new JTextField(20);
+		this.btReiniciar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				rutaInput=null;
+				rutaOutput=null;
+				tfAbrir.setText("");
+				tfGuardar.setText("");
+			}
+		});
 		this.btAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				fcInput=new JFileChooser();
@@ -85,6 +95,7 @@ public class PanelArchivos extends JPanel {
 					personas=new Persona[rawData.length];
 					for(int i=0;i<rawData.length;i++) {
 						personas[i]=new Persona();
+						deduccion=new Deduccion();
 						deduccion.calcularDeduccion(Double.parseDouble(rawData[i][2]), Double.parseDouble(rawData[i][5]), Double.parseDouble(rawData[i][6]), Double.parseDouble(rawData[i][7]), Double.parseDouble(rawData[i][8]), Double.parseDouble(rawData[i][9]), Double.parseDouble(rawData[i][10]), Double.parseDouble(rawData[i][11]), Double.parseDouble(rawData[i][12]), rawData[i][13]);
 						personas[i].Calcula(rawData[i], deduccion.GetD());
 						datosProcesados[i][0]=rawData[i][0];//Nombre
@@ -131,6 +142,7 @@ public class PanelArchivos extends JPanel {
 		this.add(this.tfGuardar);
 		this.add(this.btGuardar);
 		this.add(this.btCalcular);
+		this.add(this.btReiniciar);
 		this.btCalcular.setPreferredSize(new Dimension(120, 30));
 	}
 	
