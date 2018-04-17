@@ -29,24 +29,35 @@ public class PanelArchivos extends JPanel {
 					   tfNomArch;
 	private JLabel lbAbrir,
 				   lbGuardar,
-				   lbNota1;
+				   lbNota1,
+				   lbNomArch,
+				   lbExpPV,
+				   lbExpAg,
+				   lbExpAf,
+				   lbExpVacio;
 	private String[][] datosProcesados;
 	private FileNameExtensionFilter filter=new FileNameExtensionFilter("Archivos CSV","csv");
 	
 	
 	public PanelArchivos() {
 		super();
-		this.setPreferredSize(new Dimension(400,780));
+		this.setPreferredSize(new Dimension(400,740));
 		
 		this.lbAbrir=new JLabel("Entrada:");
 		this.btAbrir=new JButton("Buscar");
 		this.lbGuardar=new JLabel("           Salida:");
+		this.lbExpPV=new JLabel("*Exento hasta 15 días del salario mínimo o sea $1209.");
+		this.lbExpAg=new JLabel("**Hasta 15 días exentos de impuestos o sea una quincena.");
+		this.lbExpAf=new JLabel("***Hasta un 10% de los ingresos. Es una cuenta aparte.");
+		this.lbExpVacio=new JLabel("TODO CAMPO QUE QUEDE VACÍO SERÁ INTERPRETADO COMO 0");
 		this.btGuardar=new JButton("Seleccionar");
 		this.btCalcular=new JButton("Calcular");
 		this.btReiniciar=new JButton("Reiniciar");
 		this.lbNota1=new JLabel("Revise bien las ubicaciones que pone en los espacios.");
+		this.lbNomArch=new JLabel("Escribe un nombre para el archivo:");
 		this.tfAbrir=new JTextField(20);
 		this.tfGuardar=new JTextField(20);
+		this.tfNomArch=new JTextField(10);
 		this.btReiniciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				rutaInput=null;
@@ -96,8 +107,9 @@ public class PanelArchivos extends JPanel {
 					for(int i=0;i<rawData.length;i++) {
 						personas[i]=new Persona();
 						deduccion=new Deduccion();
-						deduccion.calcularDeduccion(Double.parseDouble(rawData[i][2]), Double.parseDouble(rawData[i][5]), Double.parseDouble(rawData[i][6]), Double.parseDouble(rawData[i][7]), Double.parseDouble(rawData[i][8]), Double.parseDouble(rawData[i][9]), Double.parseDouble(rawData[i][10]), Double.parseDouble(rawData[i][11]), Double.parseDouble(rawData[i][12]), rawData[i][13]);
-						personas[i].Calcula(rawData[i], deduccion.GetD());
+						String[] datoslol=rawData[i];
+						deduccion.calcularDeduccion(Double.parseDouble(rawData[i][2]), Double.parseDouble(rawData[i][5]), Double.parseDouble(rawData[i][6]), Double.parseDouble(rawData[i][7]), Double.parseDouble(rawData[i][8]), Double.parseDouble(rawData[i][9]), Double.parseDouble(rawData[i][10]), Double.parseDouble(rawData[i][11]), Double.parseDouble(rawData[i][13]), rawData[i][12]);
+						personas[i].Calcula(datoslol, deduccion.GetD());
 						datosProcesados[i][0]=rawData[i][0];//Nombre
 						datosProcesados[i][1]=rawData[i][1];//RFC
 						datosProcesados[i][2]=rawData[i][2];//Sueldo Mensual
@@ -120,16 +132,16 @@ public class PanelArchivos extends JPanel {
 						datosProcesados[i][19]=Double.toString(deduccion.GetLC());//Max a deducir Colegiatura
 						datosProcesados[i][20]=rawData[i][13];//Colegiatura Pagada
 						datosProcesados[i][21]=Double.toString(deduccion.GetDS());//Total de deducciones sin retiro
-						datosProcesados[i][22]=Double.toString((personas[i].GetTI()+Double.parseDouble(rawData[i][5])+Double.parseDouble(rawData[i][6])+Double.parseDouble(rawData[i][7])+Double.parseDouble(rawData[i][8])+Double.parseDouble(rawData[i][9])+Double.parseDouble(rawData[i][11])+Double.parseDouble(rawData[i][13]))*0.1);//Deduccion permitida
+						datosProcesados[i][22]=Double.toString(personas[i].GetTI()*0.1);//Deduccion permitida
 						datosProcesados[i][23]=Double.toString(personas[i].GetTI()-Double.parseDouble(datosProcesados[i][22]));//Monto ISR
 						datosProcesados[i][24]=Double.toString(personas[i].GetCJ());//Cuota Fija
 						datosProcesados[i][25]=Double.toString(personas[i].GetPE());//% excedente
-						datosProcesados[i][26]=Double.toString(personas[i].GetPE()*(Double.parseDouble(datosProcesados[i][23])-personas[i].GetLinf()));//Pago excedente
+						datosProcesados[i][26]=Double.toString((personas[i].GetPE()/100)*(Double.parseDouble(datosProcesados[i][23])-personas[i].GetLinf()));//Pago excedente
 						datosProcesados[i][27]=Double.toString(Double.parseDouble(datosProcesados[i][26])+personas[i].GetCJ());//Total a pagar
 					}
-					escritor=new Escritor(rutaOutput, lector.getDatos());
+					escritor=new Escritor(rutaOutput, datosProcesados, tfNomArch.getText());
 				} else {
-					JOptionPane.showMessageDialog(null, "Debes asignar una dirección para entrada y salida de datos.");
+					JOptionPane.showMessageDialog(null, "Falta alguno de los siguientes parámetros:\n-Ruta de entrada\n-Ruta de salida\n-Nombre del archivo");
 				}
 				
 				
@@ -141,16 +153,22 @@ public class PanelArchivos extends JPanel {
 		this.add(this.lbGuardar);
 		this.add(this.tfGuardar);
 		this.add(this.btGuardar);
+		this.add(this.lbNomArch);
+		this.add(this.tfNomArch);
 		this.add(this.btCalcular);
 		this.add(this.btReiniciar);
+		this.add(this.lbExpPV);
+		this.add(this.lbExpAg);
+		this.add(this.lbExpAf);
+		this.add(this.lbExpVacio);
 		this.btCalcular.setPreferredSize(new Dimension(120, 30));
 	}
 	
 	public boolean parametrosCompletos() {
-		if(this.tfAbrir.getText()!="" && this.tfGuardar.getText()!="") {
-			return true;
-		} else {
+		if(this.tfAbrir.getText().isEmpty() || this.tfGuardar.getText().isEmpty() || this.tfNomArch.getText().isEmpty()) {
 			return false;
+		} else {
+			return true;
 		}
 	}
 }
